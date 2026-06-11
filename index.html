@@ -1057,9 +1057,10 @@ function initAudio(){
   const conv=AC.createConvolver();conv.buffer=ir;
   drumBus=AC.createGain();drumBus.gain.value=1;
   const dry=AC.createGain();dry.gain.value=0.7;
-  const wet=AC.createGain();wet.gain.value=0.45;
+  const wet=AC.createGain();wet.gain.value=0.3;
   drumBus.connect(dry);dry.connect(master);
   drumBus.connect(conv);conv.connect(wet);wet.connect(master);
+  loadDrums();
 
   // drone
   [[55,0.024],[55.7,0.019],[36.5,0.042]].forEach(([f,v])=>{
@@ -1099,31 +1100,37 @@ function initAudio(){
     if(bar%4===0){drum(t+2.08,0.5,1.02);drum(t+2.3,1.0,0.88);}
   },3300);
 }
+/* real recorded drums — VSCO-2 CE (CC0): gran cassa + timpani */
+const DRUM_FILES={
+  boom:['drums/boom1.m4a','drums/boom2.m4a'],
+  boomSoft:['drums/boom_soft.m4a'],
+  timp:['drums/timp1.m4a','drums/timp2.m4a'],
+  timpSoft:['drums/timp_soft.m4a']
+};
+const drumBufs={};
+function loadDrums(){
+  for(const k of Object.keys(DRUM_FILES)){
+    drumBufs[k]=[];
+    DRUM_FILES[k].forEach((u,i)=>{
+      fetch(u).then(r=>r.arrayBuffer()).then(b=>AC.decodeAudioData(b))
+        .then(buf=>{drumBufs[k][i]=buf;}).catch(()=>{});
+    });
+  }
+}
+function hitSample(kind,t,vel,rate){
+  const arr=drumBufs[kind];if(!arr)return;
+  const have=arr.filter(Boolean);if(!have.length)return;
+  const buf=have[Math.floor(Math.random()*have.length)];
+  const src=AC.createBufferSource();src.buffer=buf;
+  src.playbackRate.value=rate*rand(0.98,1.02);
+  const g=AC.createGain();g.gain.value=vel;
+  src.connect(g);g.connect(drumBus);
+  src.start(t);
+}
 function drum(t,vel,pitch){
-  // deep membrane body
-  const o=AC.createOscillator();o.type='sine';
-  o.frequency.setValueAtTime(150*pitch,t);
-  o.frequency.exponentialRampToValueAtTime(50*pitch,t+0.10);
-  const g=AC.createGain();
-  g.gain.setValueAtTime(0.0001,t);
-  g.gain.linearRampToValueAtTime(vel*0.85,t+0.012);
-  g.gain.exponentialRampToValueAtTime(0.001,t+0.55);
-  o.connect(g);g.connect(drumBus);o.start(t);o.stop(t+0.6);
-  // mallet strike
-  const n=AC.createBufferSource();n.buffer=noiseBuf;
-  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=750;
-  const ng=AC.createGain();
-  ng.gain.setValueAtTime(vel*0.45,t);
-  ng.gain.exponentialRampToValueAtTime(0.001,t+0.06);
-  n.connect(lp);lp.connect(ng);ng.connect(drumBus);n.start(t);n.stop(t+0.1);
-  // skin resonance
-  const n2=AC.createBufferSource();n2.buffer=noiseBuf;
-  const bp=AC.createBiquadFilter();bp.type='bandpass';
-  bp.frequency.value=190*pitch;bp.Q.value=1.4;
-  const n2g=AC.createGain();
-  n2g.gain.setValueAtTime(vel*0.3,t);
-  n2g.gain.exponentialRampToValueAtTime(0.001,t+0.32);
-  n2.connect(bp);bp.connect(n2g);n2g.connect(drumBus);n2.start(t);n2.stop(t+0.36);
+  // gran cassa layered with low timpani, pitched down for mass
+  hitSample(vel>0.6?'boom':'boomSoft',t,vel,pitch*0.92);
+  hitSample(vel>0.6?'timp':'timpSoft',t+0.006,vel*0.65,pitch*0.85);
 }
 function roar(vol){
   if(!AC||muted)return;
