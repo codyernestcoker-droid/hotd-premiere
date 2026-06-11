@@ -579,7 +579,7 @@ class Dragon{
       :(this.dir>0?-460*s-60:W+460*s+60);
     this.hist=[];
     for(let i=0;i<700;i++)this.hist.push({x:hx-this.dir*i*2,y:this.y0});
-    this.nb=first?rand(2,6):rand(4,10);
+    this.nb=first?rand(3,8):rand(6,14);
   }
   headPos(){
     const s=this.scale*uiScale;
@@ -601,7 +601,7 @@ class Dragon{
       this.nb-=1/60;
       if(this.nb<=0){
         this.breath=Math.round(rand(70,115));
-        this.nb=this.far?rand(14,26):rand(8,17);
+        this.nb=this.far?rand(22,38):rand(13,25);
         roar(this.far?0.15:0.32);
       }
     }
