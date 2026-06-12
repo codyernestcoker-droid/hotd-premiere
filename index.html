@@ -373,10 +373,12 @@ const REG={
     c:'is hereby commanded by the Crown to open the gates of his keep and host this gathering on behalf of the realm'},
   krystal:{n:'Princess Krystal of House Coker',s:'Princess Krystal',
     c:'is summoned to bear witness as the Dance of the Dragons rages anew'},
-  matias:{n:'Ser Matias & Cory, Sworn Shields of House Coker',s:'Ser Matias & Cory',
+  brandi:{n:'Princess Brandi of House Coker',s:'Princess Brandi',
+    c:'is summoned to bear witness as the Dance of the Dragons rages anew'},
+  matias:{n:'Ser Matias & Cori, Sworn Shields of House Coker',s:'Ser Matias & Cori',
     c:'are summoned to bear witness as the Dance of the Dragons rages anew'},
 };
-REG.dad=REG.chip; REG.cory=REG.matias; REG.sis=REG.krystal;
+REG.dad=REG.chip; REG.cory=REG.matias; REG.cori=REG.matias; REG.sis=REG.krystal;
 const gKey=(qs.get('g')||qs.get('guest')||'').trim().toLowerCase();
 let G;
 if(REG[gKey]){G=REG[gKey];}
