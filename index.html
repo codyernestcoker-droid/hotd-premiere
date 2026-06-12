@@ -140,10 +140,12 @@
     position:absolute;bottom:58px;left:50%;transform:translateX(-50%);
     display:flex;flex-direction:column;align-items:center;gap:0;
     font-family:Cinzel,serif;letter-spacing:.3em;text-transform:uppercase;
-    font-size:.58rem;color:rgba(201,171,110,.75);
+    font-size:.72rem;color:#e0c382;
+    text-shadow:0 0 14px rgba(255,170,60,.45);
     animation:bob 2.4s ease-in-out infinite;
   }
-  .cue i{font-style:normal;font-size:1.2rem;line-height:1;color:rgba(214,178,98,.8)}
+  .cue i{font-style:normal;font-size:1.7rem;line-height:1;color:#e3c172;
+    filter:drop-shadow(0 0 8px rgba(255,170,60,.6))}
   @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,7px)}}
 
   section.block{
@@ -163,6 +165,10 @@
   .blurb{
     font-style:italic;color:#c9bb96;font-size:clamp(.95rem,2vw,1.18rem);
     max-width:580px;margin:8px auto 28px;line-height:1.5;
+  }
+  .hint{
+    font-style:italic;color:#a99a78;font-size:clamp(.85rem,1.8vw,1rem);
+    max-width:520px;margin:18px auto 0;line-height:1.45;
   }
 
   .teams{display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
@@ -307,7 +313,7 @@
     <p class="when">Sunday · June 21 · 6 PM PT / 9 PM ET · HBO Max</p>
     <p class="venue">The court shall convene at the keep of <strong>Lord Chip</strong>, Elder of House Coker</p>
 
-    <div class="cue"><span>Thy duties await</span><i>⌄</i></div>
+    <div class="cue"><span>Scroll — thy duties await</span><i>⌄</i></div>
   </header>
 
   <section class="block" id="allegiance">
@@ -337,6 +343,7 @@
       <a class="btn accept" id="accept" href="#">🔥 &nbsp;I Bend the Knee</a>
       <a class="btn decline" id="decline" href="#">I Defy the Crown</a>
     </div>
+    <p class="hint">Tapping a button readies a raven — a pre-written text to Cody. Simply press send, and your answer is recorded.</p>
   </section>
 
   <section class="block" id="tribute">
@@ -348,6 +355,7 @@
       <a class="offer" data-offer="sweets" href="#"><span class="o-glyph">🍯</span><b>Sweetmeats</b><small>desserts &amp; confections</small></a>
       <a class="offer" data-offer="mystery" href="#"><span class="o-glyph">🎁</span><b>Mystery Tribute</b><small>surprise the court</small></a>
     </div>
+    <p class="hint">Tap thine offering and a raven shall carry word of thy tribute — one press of send, and the royal larder is enriched.</p>
   </section>
 
   <p class="foot">Fire &amp; Blood · A Gathering of the Realm</p>
@@ -379,8 +387,10 @@ const REG={
     c:'are summoned to bear witness as the Dance of the Dragons rages anew'},
   nathan:{n:'Ser Nathan of House Sanne, Shield-Brother of the Crown',s:'Ser Nathan',
     c:'is summoned from the field of duty to stand with House Coker as the Dance of the Dragons rages anew'},
+  anne:{n:'Lady Anne & Lord Amit, Wise Counsel of the Realm',s:'Lady Anne & Lord Amit',
+    c:'beloved friends of House Coker through many long years, are summoned to grace the court with their wisdom as the Dance of the Dragons rages anew'},
 };
-REG.dad=REG.chip; REG.cory=REG.matias; REG.cori=REG.matias; REG.sis=REG.krystal; REG.sanne=REG.nathan;
+REG.dad=REG.chip; REG.cory=REG.matias; REG.cori=REG.matias; REG.sis=REG.krystal; REG.sanne=REG.nathan; REG.amit=REG.anne;
 const gKey=(qs.get('g')||qs.get('guest')||'').trim().toLowerCase();
 let G;
 if(REG[gKey]){G=REG[gKey];}
